@@ -1,0 +1,26 @@
+From fb77ee0584b0384ba5e498320cd6453eaab2f968 Mon Sep 17 00:00:00 2001
+From: Martchus <martchus@gmx.net>
+Date: Sat, 9 Dec 2017 20:41:26 +0100
+Subject: [PATCH 5/6] Don't use program_invocation_short_name when compiling
+ for Windows
+
+---
+ libmariadb/mariadb_lib.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/libmariadb/mariadb_lib.c b/libmariadb/mariadb_lib.c
+index 5709fbd..07d3daf 100644
+--- a/libmariadb/mariadb_lib.c
++++ b/libmariadb/mariadb_lib.c
+@@ -2665,7 +2665,7 @@ mysql_optionsv(MYSQL *mysql,enum mysql_option option, ...)
+     {
+ #if defined(__APPLE__) || defined(__FreeBSD__)
+       const char * appname = getprogname();
+-#elif defined(_GNU_SOURCE)
++#elif defined(_GNU_SOURCE) && !defined(WIN32)
+       const char * appname = program_invocation_short_name;
+ #elif defined(WIN32)
+       char appname[FN_REFLEN]= "";
+-- 
+2.15.1
+

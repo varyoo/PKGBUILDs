@@ -1,0 +1,39 @@
+From 17e2e1e8df9cfdde6784c7330ac894a3d9408287 Mon Sep 17 00:00:00 2001
+From: Martchus <martchus@gmx.net>
+Date: Sat, 9 Dec 2017 20:22:45 +0100
+Subject: [PATCH 4/4] Fix case of 'windows.h' includes
+
+---
+ include/ma_global.h             | 2 +-
+ libmariadb/secure/ma_schannel.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/include/ma_global.h b/include/ma_global.h
+index 11fd715..925b24e 100644
+--- a/include/ma_global.h
++++ b/include/ma_global.h
+@@ -23,7 +23,7 @@
+ 
+ #ifdef _WIN32
+ #include <winsock2.h>
+-#include <Windows.h>
++#include <windows.h>
+ #include <stdlib.h>
+ #define strcasecmp _stricmp
+ #define sleep(x) Sleep(1000*(x))
+diff --git a/libmariadb/secure/ma_schannel.h b/libmariadb/secure/ma_schannel.h
+index 4e398fe..5ef2465 100644
+--- a/libmariadb/secure/ma_schannel.h
++++ b/libmariadb/secure/ma_schannel.h
+@@ -38,7 +38,7 @@
+ 
+ #include <schnlsp.h>
+ #undef SECURITY_WIN32
+-#include <Windows.h>
++#include <windows.h>
+ #include <sspi.h>
+ 
+ #define SC_IO_BUFFER_SIZE 0x4000
+-- 
+2.15.1
+

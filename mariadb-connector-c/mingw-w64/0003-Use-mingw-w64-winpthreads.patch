@@ -1,0 +1,56 @@
+From 980961ba5b7e5d90db45a2448032b012074ec99c Mon Sep 17 00:00:00 2001
+From: Martchus <martchus@gmx.net>
+Date: Sat, 9 Dec 2017 20:12:14 +0100
+Subject: [PATCH 3/6] Use mingw-w64-winpthreads
+
+---
+ CMakeLists.txt       | 17 ++++++++++++-----
+ include/ma_pthread.h |  2 +-
+ 2 files changed, 13 insertions(+), 6 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index ef45ee8..0a42199 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -216,13 +216,20 @@ IF(UNIX)
+   SET(SYSTEM_LIBS ${LIBNSL} ${LIBBIND} ${LIBICONV}
+     ${LIBSOCKET} ${LIBDL} ${LIBM} ${LIBPTHREAD})
+   MESSAGE1(SYSTEM_LIBS "SYSTEM_LIBS ${SYSTEM_LIBS}")
+-  #remove possible dups from required libraries
+-  LIST(LENGTH CMAKE_REQUIRED_LIBRARIES rllength)
+-  IF(${rllength} GREATER 0)
+-    LIST(REMOVE_DUPLICATES CMAKE_REQUIRED_LIBRARIES)
+-  ENDIF()
+ ENDIF()
+ 
++IF(MINGW)
++  SET(CMAKE_HAVE_PTHREAD_H YES)
++  SET(LIBPTHREAD "pthread")
++  LIST(APPEND CMAKE_REQUIRED_LIBRARIES ${LIBPTHREAD})
++  LIST(APPEND SYSTEM_LIBS ${LIBPTHREAD})
++ENDIF()
++
++#remove possible dups from required libraries
++LIST(LENGTH CMAKE_REQUIRED_LIBRARIES rllength)
++IF(${rllength} GREATER 0)
++  LIST(REMOVE_DUPLICATES CMAKE_REQUIRED_LIBRARIES)
++ENDIF()
+ 
+ IF(CMAKE_HAVE_PTHREAD_H)
+   SET(CMAKE_REQUIRED_INCLUDES pthread.h)
+diff --git a/include/ma_pthread.h b/include/ma_pthread.h
+index 7383367..28a0a8c 100644
+--- a/include/ma_pthread.h
++++ b/include/ma_pthread.h
+@@ -32,7 +32,7 @@
+ extern "C" {
+ #endif /* __cplusplus */ 
+ 
+-#if defined(_WIN32)
++#if defined(_WIN32) && !(defined(__MINGW32__) || defined(__MINGW64__))
+ 
+ typedef CRITICAL_SECTION pthread_mutex_t;
+ 
+-- 
+2.15.1
+

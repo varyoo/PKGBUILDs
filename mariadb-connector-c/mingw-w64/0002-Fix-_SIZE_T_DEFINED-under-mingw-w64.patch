@@ -1,17 +1,17 @@
-From 61d9463469334dec02e49c37a5710d06278e4682 Mon Sep 17 00:00:00 2001
+From c57c8df0ae1cddf069149a353f48157b0c67c5aa Mon Sep 17 00:00:00 2001
 From: Martchus <martchus@gmx.net>
 Date: Sat, 17 Sep 2016 16:44:14 +0200
-Subject: [PATCH 2/3] Fix _SIZE_T_DEFINED under mingw-w64
+Subject: [PATCH 2/6] Fix _SIZE_T_DEFINED under mingw-w64
 
 ---
- include/my_global.h | 2 +-
+ include/ma_global.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/my_global.h b/include/my_global.h
-index e596d45..82a9284 100644
---- a/include/my_global.h
-+++ b/include/my_global.h
-@@ -450,7 +450,7 @@ typedef SOCKET_SIZE_TYPE size_socket;
+diff --git a/include/ma_global.h b/include/ma_global.h
+index 6eb9aeb..11fd715 100644
+--- a/include/ma_global.h
++++ b/include/ma_global.h
+@@ -458,7 +458,7 @@ typedef SOCKET_SIZE_TYPE size_socket;
  #define NO_PISAM		/* Not needed anymore */
  #define NO_MISAM		/* Not needed anymore */
  #define NO_HASH			/* Not needed anymore */
@@ -21,5 +21,5 @@ index e596d45..82a9284 100644
  #define USE_MY_STAT_STRUCT	/* For my_lib */
  #ifdef _MSC_VER
 -- 
-2.13.0
+2.15.1
 

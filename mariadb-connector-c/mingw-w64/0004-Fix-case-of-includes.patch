@@ -1,0 +1,101 @@
+From f265dc00e33b40c43270776cd4ae57396fe66ff1 Mon Sep 17 00:00:00 2001
+From: Martchus <martchus@gmx.net>
+Date: Sat, 9 Dec 2017 20:22:45 +0100
+Subject: [PATCH 4/6] Fix case of includes
+
+Required to cross compile with mingw-w64 under GNU/Linux
+---
+ include/ma_global.h             | 2 +-
+ libmariadb/ma_default.c         | 2 +-
+ libmariadb/mariadb_lib.c        | 2 +-
+ libmariadb/secure/ma_schannel.h | 2 +-
+ plugins/auth/sspi_client.c      | 2 +-
+ plugins/auth/sspi_common.h      | 4 ++--
+ 6 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/include/ma_global.h b/include/ma_global.h
+index 11fd715..925b24e 100644
+--- a/include/ma_global.h
++++ b/include/ma_global.h
+@@ -23,7 +23,7 @@
+ 
+ #ifdef _WIN32
+ #include <winsock2.h>
+-#include <Windows.h>
++#include <windows.h>
+ #include <stdlib.h>
+ #define strcasecmp _stricmp
+ #define sleep(x) Sleep(1000*(x))
+diff --git a/libmariadb/ma_default.c b/libmariadb/ma_default.c
+index 59d811d..c83f6e1 100644
+--- a/libmariadb/ma_default.c
++++ b/libmariadb/ma_default.c
+@@ -27,7 +27,7 @@
+ 
+ #ifdef _WIN32
+ #include <io.h>
+-#include "Shlwapi.h"
++#include "shlwapi.h"
+ 
+ static const char *ini_exts[]= {"ini", "cnf", 0};
+ #define R_OK 4
+diff --git a/libmariadb/mariadb_lib.c b/libmariadb/mariadb_lib.c
+index 92f74d6..5709fbd 100644
+--- a/libmariadb/mariadb_lib.c
++++ b/libmariadb/mariadb_lib.c
+@@ -69,7 +69,7 @@
+ #endif
+ #include <mysql/client_plugin.h>
+ #ifdef _WIN32
+-#include "Shlwapi.h"
++#include "shlwapi.h"
+ #endif
+ 
+ #define ASYNC_CONTEXT_DEFAULT_STACK_SIZE (4096*15)
+diff --git a/libmariadb/secure/ma_schannel.h b/libmariadb/secure/ma_schannel.h
+index 4e398fe..5ef2465 100644
+--- a/libmariadb/secure/ma_schannel.h
++++ b/libmariadb/secure/ma_schannel.h
+@@ -38,7 +38,7 @@
+ 
+ #include <schnlsp.h>
+ #undef SECURITY_WIN32
+-#include <Windows.h>
++#include <windows.h>
+ #include <sspi.h>
+ 
+ #define SC_IO_BUFFER_SIZE 0x4000
+diff --git a/plugins/auth/sspi_client.c b/plugins/auth/sspi_client.c
+index 75f5a1f..2232022 100644
+--- a/plugins/auth/sspi_client.c
++++ b/plugins/auth/sspi_client.c
+@@ -29,7 +29,7 @@ POSSIBILITY OF SUCH DAMAGE.
+ #define SECURITY_WIN32
+ #include <windows.h>
+ #include <sspi.h>
+-#include <SecExt.h>
++#include <secext.h>
+ #include <stdarg.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+diff --git a/plugins/auth/sspi_common.h b/plugins/auth/sspi_common.h
+index 34b8a56..5538f76 100644
+--- a/plugins/auth/sspi_common.h
++++ b/plugins/auth/sspi_common.h
+@@ -29,10 +29,10 @@ POSSIBILITY OF SUCH DAMAGE.
+ #define SECURITY_WIN32
+ #include <windows.h>
+ #include <sspi.h>
+-#include <SecExt.h>
++#include <secext.h>
+ #include <stdarg.h>
+ #include <stdio.h>
+ 
+ #define SSPI_MAX_TOKEN_SIZE 50000
+ #define SEC_ERROR(err) (err < 0)
+-extern void sspi_errmsg(int err, char *buf, size_t size);
+\ No newline at end of file
++extern void sspi_errmsg(int err, char *buf, size_t size);
+-- 
+2.15.1
+
